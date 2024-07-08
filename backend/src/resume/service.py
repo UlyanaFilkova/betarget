@@ -1,10 +1,11 @@
 from fastapi import HTTPException
 from sqlalchemy import select
 
-from backend.src.db import async_session_maker
-from backend.src.resume.models import Resume, ResumeStage
-from backend.src.resume.schemas import ResumeRead, ResumeCreate
-from backend.src.vacancy.schemas import VacancyRead
+from db import async_session_maker
+from resume.models import Resume, ResumeStage
+from resume.schemas import ResumeRead, ResumeCreate, ResumeUpdate
+from vacancy.schemas import VacancyRead
+from logger import logger
 
 
 async def get_resume_by_id(resume_id: int, user_id: int) -> ResumeRead:
@@ -13,8 +14,10 @@ async def get_resume_by_id(resume_id: int, user_id: int) -> ResumeRead:
         resume = await session.get(Resume, resume_id)
 
         if not resume:
+            logger.warning(f"Resume with id {resume_id} not found for user {user_id}")
             raise HTTPException(status_code=404, detail="Resume not found")
         if resume.user_id != user_id:
+            logger.warning(f"Resume with id {resume_id} not found for user {user_id}")
             raise HTTPException(status_code=403, detail="Not enough permissions to read this resume")
 
         return resume
@@ -61,3 +64,18 @@ async def delete_resume_by_id(resume_id: int, user_id: int):
         await session.delete(resume)
         await session.commit()
         return {"success": f"Resume with id {resume.id} deleted."}
+
+
+async def update_resume(updated_resume: ResumeUpdate, user_id: int) -> ResumeUpdate:
+    """Update resume with updated_resume and user_id"""
+    async with async_session_maker() as session:
+        resume = await get_resume_by_id(updated_resume.id, user_id)
+        updated_data = updated_resume.model_dump(exclude_unset=True)
+        
+        for key, value in updated_data.items():
+            setattr(resume, key, value)
+        
+        session.add(resume)
+        await session.commit()
+        await session.refresh(resume)
+        return resume

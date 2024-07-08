@@ -1,9 +1,10 @@
 from fastapi import HTTPException
 from sqlalchemy import select
 
-from backend.src.db import async_session_maker
-from backend.src.vacancy.models import Vacancy
-from backend.src.vacancy.schemas import VacancyCreate, VacancyRead
+from db import async_session_maker
+from vacancy.models import Vacancy
+from vacancy.schemas import VacancyCreate, VacancyRead, VacancyUpdate
+from logger import logger
 
 
 async def get_vacancy_by_id(vacancy_id: int, user_id: int) -> VacancyRead:
@@ -12,8 +13,10 @@ async def get_vacancy_by_id(vacancy_id: int, user_id: int) -> VacancyRead:
         vacancy = await session.get(Vacancy, vacancy_id)
 
         if not vacancy:
+            logger.warning(f"Vacancy with id {vacancy_id} not found for user {user_id}")
             raise HTTPException(status_code=404, detail="Vacancy not found")
         if vacancy.user_id != user_id:
+            logger.warning(f"Vacancy with id {vacancy_id} not found for user {user_id}")
             raise HTTPException(status_code=403, detail="Not enough permissions to read this vacancy")
 
         return vacancy
@@ -46,3 +49,18 @@ async def delete_vacancy_by_id(vacancy_id: int, user_id: int):
         await session.delete(vacancy)
         await session.commit()
         return {"status": f"Vacancy with id {vacancy.id} deleted successfully"}
+
+
+async def update_vacancy(updated_vacancy: VacancyUpdate, user_id: int) -> VacancyUpdate:
+    """Update vacancy with updated_vacancy and user_id"""
+    async with async_session_maker() as session:
+        vacancy = await get_vacancy_by_id(updated_vacancy.id, user_id)
+        updated_data = updated_vacancy.model_dump(exclude_unset=True)
+        
+        for key, value in updated_data.items():
+            setattr(vacancy, key, value)
+        
+        session.add(vacancy)
+        await session.commit()
+        await session.refresh(vacancy)
+        return vacancy
