@@ -16,6 +16,7 @@ async function main() {
     const resumes = resumesData.map((data) => new Resume(data));
     renderResumeList(resumes);
     // addClickEventListeners();
+    
   } catch (error) {
     console.error(error);
   }
