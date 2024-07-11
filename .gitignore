@@ -184,6 +184,6 @@ fabric.properties
 # idea folder, uncomment if you don't need it
 .idea
 
-### frontend
-.node_modules
-.frontend/node_modules/
+# frontend
+frontend/vue-app/node_modules
+frontend/vue-app/.vscode
