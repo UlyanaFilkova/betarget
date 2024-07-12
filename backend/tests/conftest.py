@@ -15,6 +15,10 @@ test_urls = {
         "register": "/register",
         "login": "/login",
         "logout": "/logout",
+        "forgot_password": "/forgot-password",
+        "reset_password": "/reset-password",
+        "ask_verification": "/ask_verification",
+        "verify_account": "/verify-account",
     },
     "user": {
         "update": f"{api_prefix}/user/",

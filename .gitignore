@@ -185,5 +185,8 @@ fabric.properties
 .idea
 
 # frontend
-frontend/vue-app/node_modules
-frontend/vue-app/.vscode
+frontend/node_modules
+frontend/.vscode
+
+frontend/src/assets/css/*.css
+frontend/src/assets/css/*.css.map

@@ -1,106 +1,14 @@
-@charset "UTF-8";
-/* Указываем box sizing */
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-}
+@import "_variables";
 
-* {
-  font-family: "Inter", sans-serif, "Open Sans", "Segoe UI", Tahoma, Helvetica, Verdana, sans-serif;
-}
-
-/* Убираем внутренние отступы */
-ul[class],
-ol[class] {
-  padding: 0;
-}
-
-/* Убираем внешние отступы */
-body,
-h1,
-h2,
-h3,
-h4,
-p,
-ul[class],
-ol[class],
-li,
-figure,
-figcaption,
-blockquote,
-dl,
-dd {
-  margin: 0;
-}
-
-a {
-  text-decoration: none;
-  color: inherit;
-}
-
-button {
-  background: none;
-  border: none;
-  padding: 0;
-  cursor: pointer;
-  outline: none;
-}
-
-/* Выставляем основные настройки по-умолчанию для body */
-body {
-  min-height: 100vh;
-  scroll-behavior: smooth;
-  overflow-x: hidden;
-  text-rendering: optimizeSpeed;
-}
-
-/* Удаляем стандартную стилизацию для всех ul и il, у которых есть атрибут class*/
-ul[class],
-ol[class] {
-  list-style: none;
-}
-
-/* Элементы a, у которых нет класса, сбрасываем до дефолтных стилей */
-a:not([class]) {
-  -webkit-text-decoration-skip: ink;
-          text-decoration-skip-ink: auto;
-}
-
-/* Упрощаем работу с изображениями */
-img {
-  max-width: 100%;
-  display: block;
-}
-
-/* Указываем понятную периодичность в потоке данных у article*/
-article > * + * {
-  margin-top: 1em;
-}
-
-/* Наследуем шрифты для инпутов и кнопок */
-input,
-button,
-textarea,
-select {
-  font: inherit;
-}
-
-/* Удаляем все анимации и переходы для людей, которые предпочитай их не использовать */
-@media (prefers-reduced-motion: reduce) {
-  * {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
-  }
-}
 body {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   overflow-y: hidden;
+
+  // height: 100vh;
+  // padding-top: 1.7%;
 }
 
 .body__margin-top {
@@ -113,31 +21,41 @@ body {
   height: 100vh;
   width: 96%;
   max-width: calc(2100px + 6%);
+  // margin: 1.7% 2% 0 2%;
   display: grid;
-  row-gap: 1.3%;
-  -moz-column-gap: 2%;
-       column-gap: 2%;
-  grid-template-columns: min(22%, 350px) min(25%, 350px) min(49%, 1350px + 2%);
-  grid-template-rows: max(60px, 5vh) auto;
+  row-gap: $wrapper-row-gap;
+  column-gap: $wrapper-column-gap;
+  // grid-template-columns: 22% 25% 30% 20%;
+  grid-template-columns: min(22%, 350px) min(25%, 350px) min(
+      calc(96% - 22% - 25%),
+      calc(1000px + 350px + 2%)
+    );
+
+  grid-template-rows: $filters-height auto;
 }
+
+// #region ВАКАНСИИ
 
 .vacancies {
   grid-column-start: 1;
   grid-column-end: 2;
   grid-row-start: 1;
   grid-row-end: 3;
+
   padding: 23px 0 20px;
   border-radius: 27px;
+
   display: flex;
   flex-direction: column;
-  background-color: #eeeff2;
-  height: min(93vh, 800px);
+
+  background-color: $color-medium-background;
+  height: $block-height;
 }
 
 .vacancies__header {
   font-size: 21px;
   margin-bottom: 20px;
-  margin-left: 27px;
+  margin-left: $padding-vacancies;
 }
 
 .vacancies__list {
@@ -148,51 +66,50 @@ body {
 /* Legacy browsers with `::-webkit-scrollbar-*` support */
 @supports selector(::-webkit-scrollbar) {
   .vacancies__list::-webkit-scrollbar-thumb {
-    background: #c7ccd5;
+    background: $color-scroll-bar;
   }
   .vacancies__list::-webkit-scrollbar-track {
-    background: #eeeff2;
+    background: $color-medium-background;
   }
   .vacancies__list::-webkit-scrollbar {
     width: 6px;
   }
 }
+
 /* Modern browsers with `scrollbar-*` support */
 @supports (scrollbar-width: auto) {
   .vacancies__list {
-    scrollbar-color: #c7ccd5 #eeeff2;
+    scrollbar-color: $color-scroll-bar $color-medium-background;
     scrollbar-width: thin;
   }
 }
+
 /* Legacy browsers with `-ms-` prefix (Internet Explorer)*/
 @supports (-ms-ime-align: auto) {
   .vacancies__list {
-    scrollbar-base-color: #c7ccd5;
-    scrollbar-track-color: #eeeff2;
+    scrollbar-base-color: $color-scroll-bar;
+    scrollbar-track-color: $color-medium-background;
     scrollbar-width: thin;
   }
 }
+
 .vacancies__vacancy {
   display: block;
-  padding: 10px 27px;
+  padding: 10px $padding-vacancies;
 }
-
 .vacancies__vacancy:hover {
-  background-color: #dde0e5;
+  background-color: $color-dark-background;
 }
-
 .vacancies__vacancy_active {
-  background-color: #dde0e5;
+  background-color: $color-dark-background;
 }
-
 .vacancies__title {
   font-size: 17px;
   margin-bottom: 3px;
 }
-
 .vacancies__subtitle {
   font-size: 12.7px;
-  color: #909aaa;
+  color: $color-secondary-font;
 }
 
 .vacancies__new-vacancy {
@@ -204,29 +121,33 @@ body {
 }
 
 .vacancies__new-vacancy:hover p {
-  color: #57657e;
+  color: $color-button-hover;
 }
 
 .vacancies__new-vacancy:hover svg {
-  fill: #57657e;
+  fill: $color-button-hover;
 }
 
 .vacancies__new-vacancy p {
-  color: #6f7c91;
+  color: $color-button;
   font-size: 17.33px;
 }
 
 .vacancies__new-vacancy svg {
-  height: 30px;
-  width: 30px;
-  fill: #6f7c91;
+  height: $new-button-size;
+  width: $new-button-size;
+  fill: $color-button;
 }
 
+// #endregion
+
+// #region ФИЛЬТРЫ
 .filters {
   grid-column-start: 2;
   grid-column-end: 4;
   grid-row-start: 1;
   grid-row-end: 2;
+
   display: flex;
   align-items: center;
   margin: 20px 0 30px;
@@ -254,84 +175,87 @@ body {
   font-size: 17px;
   padding: 7px 12px;
 }
-
 .filters__filter:hover {
-  background-color: #6f7c91;
+  background-color: $color-button;
   color: #ffffff;
   border-radius: 17px;
 }
-
 .filters__filter_active {
-  background-color: #6f7c91;
+  background-color: $color-button;
   color: #ffffff;
   border-radius: 17px;
 }
-
 .filters__new-resume {
   display: flex;
   gap: 7px;
   align-items: center;
 }
-
 .filters__new-resume p {
-  color: #6f7c91;
+  color: $color-button;
   font-size: 17.33px;
 }
 
 .filters__new-resume svg {
-  height: 30px;
-  width: 30px;
-  fill: #6f7c91;
+  height: $new-button-size;
+  width: $new-button-size;
+  fill: $color-button;
 }
 
 .filters__new-resume:hover p {
-  color: #57657e;
+  color: $color-button-hover;
 }
 
 .filters__new-resume:hover svg {
-  fill: #57657e;
+  fill: $color-button-hover;
 }
 
+// #endregion
+
+// #region СПИСОК РЕЗЮМЕ
 .resume-list {
   grid-column-start: 2;
   grid-column-end: 3;
   grid-row-start: 2;
   grid-row-end: 3;
+
   display: flex;
   flex-direction: column;
   align-items: start;
   justify-content: start;
-  height: calc(min(93vh, 800px) - max(60px, 5vh) - 1.3%);
+  height: calc($block-height - $filters-height - $wrapper-row-gap);
   overflow: auto;
 }
 
 /* Legacy browsers with `::-webkit-scrollbar-*` support */
 @supports selector(::-webkit-scrollbar) {
   .resume-list::-webkit-scrollbar-thumb {
-    background: #c7ccd5;
+    background: $color-scroll-bar;
   }
   .resume-list::-webkit-scrollbar-track {
-    background: #eeeff2;
+    background: $color-medium-background;
   }
   .resume-list::-webkit-scrollbar {
     width: 6px;
   }
 }
+
 /* Modern browsers with `scrollbar-*` support */
 @supports (scrollbar-width: auto) {
   .resume-list {
-    scrollbar-color: #dde0e5 white;
+    scrollbar-color: $color-scroll-bar-light white;
     scrollbar-width: thin;
   }
 }
+
 /* Legacy browsers with `-ms-` prefix (Internet Explorer)*/
 @supports (-ms-ime-align: auto) {
   .resume-list {
-    scrollbar-base-color: #c7ccd5;
-    scrollbar-track-color: #eeeff2;
+    scrollbar-base-color: $color-scroll-bar;
+    scrollbar-track-color: $color-medium-background;
     scrollbar-width: thin;
   }
 }
+
 .resume-list__resume {
   display: flex;
   gap: 13px;
@@ -345,19 +269,18 @@ body {
 }
 
 .resume-list__resume:hover {
-  background-color: #eeeff2;
+  background-color: $color-medium-background;
 }
 
 .resume-list__resume.resume-list__resume_active {
-  background-color: #eeeff2;
+  background-color: $color-medium-background;
 }
-
 .resume-list__photo-container {
   width: 68.5px;
   height: 68.5px;
   overflow: hidden;
   border-radius: 50%;
-  background-color: #dde0e5;
+  background-color: $color-dark-background;
 }
 
 @media (max-width: 1150px) {
@@ -366,88 +289,94 @@ body {
     height: 6vw;
   }
 }
+
 .resume-list__photo {
   width: 100%;
   height: 100%;
-  -o-object-fit: cover;
-     object-fit: cover;
+  object-fit: cover;
   display: block;
 }
-
 .resume-list__info {
   display: flex;
   flex-direction: column;
   gap: 2px;
 }
-
 .resume-list__name {
   font-size: 17px;
 }
-
 .resume-list__job-title {
   font-size: 12.7px;
-  color: #909aaa;
+  color: $color-secondary-font;
 }
-
 .resume-list__rating {
   font-size: 10px;
-  color: #909aaa;
+  color: $color-secondary-font;
   font-weight: 500;
 }
-
 .resume-list__rating-number {
-  color: #6f7c91;
+  color: $color-button;
   font-size: 14px;
 }
 
 .resume-list__rating-number_good {
-  color: #13be58;
+  color: $color-good-rating-font;
 }
-
+// #endregion
+// #region РЕЗЮМЕ
 .resume {
   grid-column-start: 3;
   grid-column-end: 4;
   grid-row-start: 2;
   grid-row-end: 3;
+
   box-sizing: border-box;
-  height: calc(min(93vh, 800px) - max(60px, 5vh) - 1.3%);
+  height: calc($block-height - $filters-height - $wrapper-row-gap);
   width: 100%;
-  max-width: calc(1250px + 4%);
+  max-width: calc($resume-display-max-width + $resume-info-max-width + 4%);
   overflow-y: auto;
   padding-right: 10px;
+
   display: grid;
   grid-column-gap: 4%;
-  grid-template-columns: min(63%, 900px) min(33%, 350px);
+  grid-template-columns: min(63%, $resume-display-max-width) min(
+      33%,
+      $resume-info-max-width
+    );
+
   position: relative;
 }
 
 /* Legacy browsers with `::-webkit-scrollbar-*` support */
 @supports selector(::-webkit-scrollbar) {
   .resume::-webkit-scrollbar-thumb {
-    background: #c7ccd5;
+    background: $color-scroll-bar;
   }
   .resume::-webkit-scrollbar-track {
-    background: #eeeff2;
+    background: $color-medium-background;
   }
   .resume::-webkit-scrollbar {
     width: 6px;
   }
 }
+
 /* Modern browsers with `scrollbar-*` support */
 @supports (scrollbar-width: auto) {
   .resume {
-    scrollbar-color: #dde0e5 white;
+    scrollbar-color: $color-scroll-bar-light white;
     scrollbar-width: thin;
   }
 }
+
 /* Legacy browsers with `-ms-` prefix (Internet Explorer)*/
 @supports (-ms-ime-align: auto) {
   .resume {
-    scrollbar-base-color: #c7ccd5;
-    scrollbar-track-color: #eeeff2;
+    scrollbar-base-color: $color-scroll-bar;
+    scrollbar-track-color: $color-medium-background;
     scrollbar-width: thin;
   }
 }
+//#endregion
+// #region ОТОБРАЖЕНИЕ РЕЗЮМЕ
 .resume-display {
   display: none;
   grid-column-start: 1;
@@ -458,23 +387,21 @@ body {
 
 .resume-display__actions {
   height: 200px;
-  background-color: #f6f7f8;
+  background-color: $color-light-background;
   border-radius: 25px;
   padding: 14px 15px 14px 20px;
 }
-
 .resume-display__stage {
   font-size: 17px;
-  color: #6f7c91;
+  color: $color-button;
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
-
 .resume-display__change-stage,
 .resume-display__save-stage,
 .resume-display__cancel-stage {
-  background-color: #6f7c91;
+  background-color: $color-button;
   font-size: 12.7px;
   color: #ffffff;
   padding: 7px 10px;
@@ -484,7 +411,7 @@ body {
 .resume-display__stage-input {
   display: none;
   font-size: 16px;
-  border: 1px solid #ceced1;
+  border: 1px solid $color-input-border;
   border-radius: 10px;
   padding: 3px 6px;
   cursor: pointer;
@@ -492,7 +419,7 @@ body {
 }
 
 .resume-display__stage-input:hover {
-  border-color: #939dac;
+  border-color: $color-rating-font-darker;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 }
 
@@ -530,36 +457,39 @@ body {
   display: flex;
   justify-content: space-between;
   padding-right: 10px;
-  color: #909aaa;
+  color: $color-secondary-font;
 }
 
 /* Legacy browsers with `::-webkit-scrollbar-*` support */
 @supports selector(::-webkit-scrollbar) {
   .resume-display__history::-webkit-scrollbar-thumb {
-    background: #c7ccd5;
+    background: $color-scroll-bar;
   }
   .resume-display__history::-webkit-scrollbar-track {
-    background: #eeeff2;
+    background: $color-medium-background;
   }
   .resume-display__history::-webkit-scrollbar {
     width: 6px;
   }
 }
+
 /* Modern browsers with `scrollbar-*` support */
 @supports (scrollbar-width: auto) {
   .resume-display__history {
-    scrollbar-color: #dde0e5 #f6f7f8;
+    scrollbar-color: $color-scroll-bar-light $color-light-background;
     scrollbar-width: thin;
   }
 }
+
 /* Legacy browsers with `-ms-` prefix (Internet Explorer)*/
 @supports (-ms-ime-align: auto) {
   .resume-display__history {
-    scrollbar-base-color: #c7ccd5;
-    scrollbar-track-color: #eeeff2;
+    scrollbar-base-color: $color-scroll-bar;
+    scrollbar-track-color: $color-medium-background;
     scrollbar-width: thin;
   }
 }
+
 .resume-content {
   font-size: 15px;
   display: flex;
@@ -567,35 +497,42 @@ body {
   gap: 15px;
   margin: 15px 0;
 }
-
 .resume-content h3 {
   font-size: 17px;
   margin-bottom: 8px;
   font-weight: 600;
 }
+.resume-content__skills {
+}
 
 .resume-content__skills-list li {
   display: inline-block;
-  background-color: #eeeff2;
+  background-color: $color-medium-background;
   padding: 2px 8px;
   border-radius: 10px;
   margin: 4px 1.5px;
 }
+//#endregion
 
+//#region РЕЗЮМЕ КОНТАКТЫ
 .resume-info {
   grid-column-start: 2;
   grid-column-end: 3;
   grid-row-start: 1;
   grid-row-end: 2;
-  background-color: #f6f7f8;
+
+  background-color: $color-light-background;
   border-radius: 25px;
   padding: 20px 0 15px;
+
+  // display: flex;
   flex-direction: column;
   align-items: center;
+
   position: relative;
-  height: -moz-fit-content;
   height: fit-content;
   overflow-x: hidden;
+
   display: none;
 }
 
@@ -603,7 +540,6 @@ body {
   display: flex;
   flex-direction: column;
   align-items: start;
-  height: -moz-fit-content;
   height: fit-content;
   overflow-x: hidden;
   padding: 0 max(10%, 15px);
@@ -616,7 +552,7 @@ body {
   justify-content: start;
   gap: min(15px, 8%);
   align-items: end;
-  color: #6f7c91;
+  color: $color-button;
   font-size: 14px;
   margin-bottom: 8px;
 }
@@ -624,16 +560,18 @@ body {
 .resume-info__rating-result-span {
   font-size: 24px;
   line-height: 24px;
-  color: #57657e;
+  color: $color-button-hover;
 }
 
 .resume-info__rating-result-span_good {
-  color: #13be58;
+  color: $color-good-rating-font;
 }
 
 .resume-info__rating-slider {
   width: 100%;
-  color: #939dac;
+  // position: absolute;
+  // top: 2px;
+  color: $color-rating-font-darker;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -646,21 +584,23 @@ body {
   height: 10px;
   border-radius: 10px;
   opacity: 0.7;
+  -webkit-transition: 0.2s;
   transition: opacity 0.2s;
   cursor: pointer;
 }
-
 .resume-info__slider:hover {
   opacity: 1;
   outline: none;
 }
 
 .resume-info__slider::-webkit-slider-runnable-track {
+  // background: #4caf50; /* custom track color */
   border-radius: 10px;
   height: 10px;
 }
 
 .resume-info__slider::-moz-range-track {
+  // background: #4caf50; /* custom track color */
   border-radius: 10px;
   height: 10px;
 }
@@ -671,29 +611,31 @@ body {
   width: 15px;
   height: 15px;
   margin-top: -2.5px;
-  background: #6f7c91;
+  background: $color-button;
   border-radius: 50%;
   cursor: pointer;
 }
 
 .resume-info__slider::-moz-range-thumb {
   -webkit-appearance: none;
-  -moz-appearance: none;
-       appearance: none;
+  appearance: none;
   outline: none;
   width: 13px;
   height: 13px;
-  background: #6f7c91;
+  background: $color-button;
   border-radius: 50%;
   cursor: pointer;
 }
-
 /* стили для отображения текущей оценки */
+// .resume-info__rating {
+//   font-size: 24px;
+//   font-weight: bold;
+// }
 /* стили для стрелочек */
 .resume-info__arrow {
   font-size: 24px;
   cursor: pointer;
-  color: #6f7c91;
+  color: $color-button;
 }
 
 .resume-info__arrow_minus {
@@ -712,7 +654,7 @@ body {
   width: 100%;
   height: min(35vh, 270px);
   border-radius: 25px;
-  background-color: #dde0e5;
+  background-color: $color-dark-background;
   margin-bottom: 10px;
 }
 
@@ -726,18 +668,16 @@ body {
 .resume-info__photo {
   width: 100%;
   height: 100%;
-  -o-object-fit: cover;
-     object-fit: cover;
+  object-fit: cover;
 }
 
 .resume-info__name {
   font-size: 21px;
   margin-bottom: 5px;
 }
-
 .resume-info__position {
   font-size: 14px;
-  color: #909aaa;
+  color: $color-secondary-font;
   margin-bottom: 25px;
 }
 
@@ -746,14 +686,12 @@ body {
   flex-direction: column;
   gap: 10px;
 }
-
 .resume-info__list li {
   display: block;
 }
-
 .resume-info__list li h6 {
   font-size: 12.7px;
-  color: #909aaa;
+  color: $color-secondary-font;
   font-weight: 400;
   margin: 0;
 }
@@ -761,7 +699,6 @@ body {
 .resume-info__list-component {
   font-size: 15px;
 }
-
 .resume-info__contacts {
   width: 100%;
   display: flex;
@@ -771,21 +708,23 @@ body {
 }
 
 .resume-info__contacts-link svg {
-  fill: #c7ccd5;
+  fill: $color-scroll-bar;
   width: 25px;
   height: 25px;
 }
-
 .resume-info__contacts-link:hover svg {
-  fill: #909aaa;
+  fill: $color-secondary-font;
 }
 
+// #endregion
+
 .resume__not-chosen {
+  // display: none;
   display: block;
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   font-size: 18px;
-  color: #6f7c91;
-}/*# sourceMappingURL=main.css.map */
+  color: $color-button;
+}
