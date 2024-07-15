@@ -1,6 +1,6 @@
 <script setup>
-import LoginComponent from "@/components/LoginComponent.vue";
 import "@/assets/css/default.css";
+import LoginComponent from "@/components/LoginComponent.vue";
 </script>
 
 <template>

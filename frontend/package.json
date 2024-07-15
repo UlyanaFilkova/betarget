@@ -1,5 +1,5 @@
 {
-  "name": "studyvue",
+  "name": "betarget_frontend",
   "version": "0.0.0",
   "private": true,
   "type": "module",
@@ -13,6 +13,7 @@
     "axios": "^1.7.2",
     "json-server": "^1.0.0-beta.1",
     "primeicons": "^7.0.0",
+    "qs": "^6.12.3",
     "spinner": "^0.2.4",
     "vue": "^3.4.29",
     "vue-router": "^4.4.0",

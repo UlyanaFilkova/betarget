@@ -15,6 +15,8 @@ const loginPassword = ref(null);
 
 const errors = reactive({
   email: "",
+  password: "",
+  emptyFields: "",
 });
 
 function validatePassword(password) {
@@ -41,11 +43,11 @@ onMounted(() => {
   loginPassword.value.addEventListener("focusout", (event) => {
     if (!validatePassword(loginPassword.value.value)) {
       errors.password =
-        "Пароль должен быть не менее 8 символов и содержать большие буквы и цифры";
+        "Пароль должен содержать не менее 8 символов и включать большие буквы и цифры";
       loginPassword.value.addEventListener("input", (event) => {
         if (!validatePassword(loginPassword.value.value)) {
           errors.password =
-            "Пароль должен быть не менее 8 символов и содержать большие буквы и цифры";
+            "Пароль должен содержать не менее 8 символов и включать большие буквы и цифры";
         } else {
           errors.password = "";
         }
@@ -58,23 +60,25 @@ onMounted(() => {
 
 const handleSubmit = async () => {
   // если поля пусты или невалидны
-  if (
-    errors.email !== "" ||
-    errors.password !== "" ||
-    loginPassword.value.value === "" ||
-    loginEmail === ""
-  ) {
-    return; 
+  if (loginPassword.value.value === "" || loginEmail.value.value === "") {
+    errors.emptyFields = "Заполните, пожалуйста, все поля";
+  } else {
+    errors.emptyFields = "";
+  }
+  if (errors.email !== "" || errors.password !== "" || errors.emptyFields) {
+    return;
   }
   const userData = {
-    email: form.email,
+    username: form.email,
     password: form.password,
   };
 
+  const params = new URLSearchParams(userData);
+
   try {
-    console.log(userData);
-    // const response = await axios.post("/api/jobs/", userData);
-    // router.push(`/jobs/${response.data.id}`);
+    const response = await axios.post("/api/login", params, {
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    });
   } catch (error) {
     console.error("Error login", error);
   }
@@ -86,6 +90,11 @@ const handleSubmit = async () => {
     <div class="login__wrapper">
       <h1 class="login__logo">Betarget</h1>
       <form novalidate class="login__form" @submit.prevent="handleSubmit">
+        <span
+          :style="{ visibility: errors.emptyFields ? 'visible' : 'hidden' }"
+          class="login__error"
+          >{{ errors.emptyFields }}</span
+        >
         <input
           class="login__input"
           type="email"
@@ -121,8 +130,10 @@ const handleSubmit = async () => {
         <button class="login__button" type="submit">Вход</button>
       </form>
       <div class="login__links">
-        <RouterLink to="" class="login__link">Забыли пароль?</RouterLink>
-        <RouterLink to="" class="login__link">Создать аккаунт</RouterLink>
+        <RouterLink to="" class="login__link">Забыли пароль? </RouterLink>
+        <RouterLink to="/registration" class="login__link"
+          >Создать аккаунт</RouterLink
+        >
       </div>
     </div>
   </section>

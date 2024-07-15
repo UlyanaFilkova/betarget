@@ -35,15 +35,11 @@
 .login__input {
   border: 2px $color-input-border solid;
   border-radius: 7px;
-  padding: 5px 8px;
+  padding: 8px 8px;
   margin-bottom: 5px;
   width: 100%;
   color: $color-input-text;
 }
-
-// .login__input:last-of-type {
-//   margin-bottom: 20px;
-// }
 
 .login__input:hover {
   border-color: $color-input-border;
@@ -67,7 +63,7 @@
   font-size: 13px;
   visibility: hidden;
   margin-bottom: 10px;
-  align-self: flex-end;
+  align-self: flex-start;
   color: $color-input-error;
 }
 
