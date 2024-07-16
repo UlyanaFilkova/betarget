@@ -71,7 +71,7 @@ const checkForm = () => {
   } else {
     errors.emptyFields = "";
   }
-  // если еще висят ошибки
+  // если еще остались ошибки
   if (errors.email !== "" || errors.password !== "" || errors.emptyFields) {
     return false;
   }

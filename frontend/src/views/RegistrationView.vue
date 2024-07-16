@@ -1,6 +1,6 @@
 <script setup>
 import "@/assets/css/default.css";
-import RegistrationComponent from "@/components/RegistrationComponent.vue";
+import RegistrationComponent from "@/components/Registration.vue";
 </script>
 
 <template>

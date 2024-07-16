@@ -26,61 +26,69 @@ const errors = reactive({
   emptyFields: "",
 });
 
-function validatePassword(password) {
+const validatePassword = (password) => {
   const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
   return passwordRegex.test(password);
-}
+};
+
+const checkEmail = () => {
+  if (loginEmail.value.validity.typeMismatch) {
+    errors.email = "Введите корректный email";
+    return false;
+  } else {
+    errors.email = "";
+    return true;
+  }
+};
+
+const checkPassword = () => {
+  if (!validatePassword(loginPassword.value.value)) {
+    errors.password =
+      "Пароль должен содержать не менее 8 символов и включать большие буквы и цифры";
+    return false;
+  } else {
+    errors.password = "";
+    return true;
+  }
+};
+
+const checkRepeatPassword = () => {
+  if (loginRepeatPassword.value.value !== loginPassword.value.value) {
+    errors.repeatPassword = "Пароли не совпадают";
+    return false;
+  } else {
+    errors.repeatPassword = "";
+    return true;
+  }
+};
 
 onMounted(() => {
   loginEmail.value.addEventListener("focusout", (event) => {
-    if (loginEmail.value.validity.typeMismatch) {
-      errors.email = "Введите корректный email";
-      loginEmail.value.addEventListener("input", (event) => {
-        if (loginEmail.value.validity.typeMismatch) {
-          errors.email = "Введите корректный email";
-        } else {
-          errors.email = "";
-        }
-      });
+    if (checkEmail() === false) {
+      loginEmail.value.addEventListener("input", checkEmail);
     } else {
       errors.email = "";
     }
   });
 
   loginPassword.value.addEventListener("focusout", (event) => {
-    if (!validatePassword(loginPassword.value.value)) {
-      errors.password =
-        "Пароль должен содержать не менее 8 символов и включать большие буквы и цифры";
-      loginPassword.value.addEventListener("input", (event) => {
-        if (!validatePassword(loginPassword.value.value)) {
-          errors.password =
-            "Пароль должен содержать не менее 8 символов и включать большие буквы и цифры";
-        } else {
-          errors.password = "";
-        }
-      });
+    if (checkPassword() === false) {
+      loginPassword.value.addEventListener("input", checkPassword);
     } else {
       errors.password = "";
     }
   });
 
   loginRepeatPassword.value.addEventListener("focusout", (event) => {
-    if (loginRepeatPassword.value.value !== loginPassword.value.value) {
-      errors.repeatPassword = "Пароли не совпадают";
-      loginRepeatPassword.value.addEventListener("input", (event) => {
-        if (!validatePassword(loginPassword.value.value)) {
-          errors.repeatPassword = "Пароли не совпадают";
-        } else {
-          errors.repeatPassword = "";
-        }
-      });
+    if (checkRepeatPassword() === false) {
+      loginRepeatPassword.value.addEventListener("input", checkRepeatPassword);
     } else {
       errors.repeatPassword = "";
     }
   });
 });
 
-const handleSubmit = async () => {
+const checkForm = () => {
   // если поля пусты или невалидны
   if (
     loginRepeatPassword.value.value === "" ||
@@ -89,9 +97,11 @@ const handleSubmit = async () => {
     loginEmail.value.value === ""
   ) {
     errors.emptyFields = "Заполните, пожалуйста, все поля";
+    return false;
   } else {
     errors.emptyFields = "";
   }
+  // если еще остались ошибки
   if (
     errors.repeatPassword !== "" ||
     errors.username !== "" ||
@@ -99,6 +109,22 @@ const handleSubmit = async () => {
     errors.password !== "" ||
     errors.emptyFields
   ) {
+    return false;
+  }
+
+  if (
+    checkEmail() === false ||
+    checkPassword() === false ||
+    checkRepeatPassword() === false
+  ) {
+    return false;
+  }
+
+  return true;
+};
+
+const handleSubmit = async () => {
+  if (!checkForm()) {
     return;
   }
   const userData = {
