@@ -1,3 +1,38 @@
+<script setup>
+import { reactive, onMounted } from "vue";
+import router from "@/router";
+import axios from "axios";
+import { useRoute, useRouter } from "vue-router";
+import { useToast } from "vue-toastification";
+import Vacancy from "@/models/vacancy.js";
+
+const route = useRoute();
+
+const fetchVacancies = async () => {
+  try {
+    const response = await axios.get("/server/api/v1/vacancy", {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      withCredentials: true,
+    });
+    return response.data;
+  } catch (error) {
+    throw new Error("Error fetching vacancies");
+  }
+};
+
+onMounted(async () => {
+  try {
+    const vacanciesData = await fetchVacancies();
+    const vacancies = vacanciesData.map((data) => new Vacancy(data));
+    console.log(vacancies);
+  } catch (error) {
+    console.error(error);
+  }
+});
+</script>
+
 <template>
   <section class="vacancies">
     <div class="vacancies__header">Вакансии</div>

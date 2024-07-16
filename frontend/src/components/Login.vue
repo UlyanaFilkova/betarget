@@ -95,7 +95,7 @@ const handleSubmit = async () => {
   const params = new URLSearchParams(userData);
 
   try {
-    const response = await axios.post("/api/login", params, {
+    const response = await axios.post("/server/login", params, {
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
     });
   } catch (error) {

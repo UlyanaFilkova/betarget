@@ -144,7 +144,7 @@ const handleSubmit = async () => {
 
   try {
     console.log(userData);
-    const response = await axios.post("/api/register", userData, {
+    const response = await axios.post("/server/register", userData, {
       headers: { "Content-Type": "application/json" },
     });
     console.log(response.data);

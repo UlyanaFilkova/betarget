@@ -1,11 +1,11 @@
 <script setup>
 import "@/assets/css/default.css";
 import "@/assets/css/crm.css";
-import Header from "@/components/CrmComponents/Header.vue";
-import Vacancies from "@/components/CrmComponents/Vacancies.vue";
-import Filters from "@/components/CrmComponents/Filters.vue";
-import ResumeList from "@/components/CrmComponents/ResumeList.vue";
-import Resume from "@/components/CrmComponents/Resume.vue";
+import Header from "@/components/crmComponents/Header.vue";
+import Vacancies from "@/components/crmComponents/Vacancies.vue";
+import Filters from "@/components/crmComponents/Filters.vue";
+import ResumeList from "@/components/crmComponents/ResumeList.vue";
+import Resume from "@/components/crmComponents/resumeComponents/Resume.vue";
 </script>
 
 <template>
