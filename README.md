@@ -7,7 +7,7 @@
 - **Data validation** - [Pydantic](https://docs.pydantic.dev).
 
 ### Frontend: 
-- HTML, CSS, SCSS, JavaScript, Vue(in future)
+- HTML, CSS, SCSS, JavaScript, Vue.js, Pinia
 
 ### Other:
 - 🐳 [Docker Compose](https://www.docker.com).
